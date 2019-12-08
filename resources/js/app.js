@@ -14,7 +14,7 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default-dark.css'
 
 Vue.use(VueMaterial)
-
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 import 'es6-promise/auto'
 import axios from 'axios'

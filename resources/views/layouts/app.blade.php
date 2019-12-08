@@ -9,11 +9,14 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <link href="/css/chunk-vendors.66440731.css" rel="preload" as="style">
     <!-- Fonts -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
 
     <!-- Styles -->
     {{--<link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
+    <link href="/css/chunk-vendors.66440731.css" rel="stylesheet">
+
 </head>
 <body>
 <div id="app">

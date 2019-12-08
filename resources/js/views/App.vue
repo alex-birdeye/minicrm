@@ -41,4 +41,9 @@
     .md-content {
         padding: 0 5rem;
     }
+
+    .page-link {
+        background-color: inherit;
+        border: none;
+    }
 </style>

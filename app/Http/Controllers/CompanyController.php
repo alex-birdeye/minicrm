@@ -17,7 +17,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return Company::limit(10)->latest()->get();
+        return Company::latest()->paginate(10);
     }
 
     /**
@@ -80,7 +80,6 @@ class CompanyController extends Controller
     public function update(UpdateCompany $request, Company $company)
     {
         $request->validated();
-        dd($request->file('logofile'));
         if ($request->file('logofile'))
         {
             $logoPath = $request->file('logofile')->storePublicly('logos', 'public');

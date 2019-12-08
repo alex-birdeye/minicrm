@@ -56,7 +56,7 @@
                 <md-table-head>Action</md-table-head>
             </md-table-row>
 
-            <md-table-row v-for="company in companies">
+            <md-table-row v-for="company in companies.data">
                 <md-table-cell>
                     <img v-if="company.logo" :src="'/storage/' + company.logo" alt="">
                 </md-table-cell>
@@ -74,6 +74,7 @@
                 </md-table-cell>
             </md-table-row>
         </md-table>
+        <pagination :data="companies" :limit="2" @pagination-change-page="getResults"></pagination>
     </md-content>
 </template>
 
@@ -90,11 +91,11 @@
             file: null
         }),
         mounted() {
-            this.getCompanies()
+            this.getResults()
         },
         methods: {
-            getCompanies() {
-                axios.get('/companies')
+            getResults(page = 1) {
+                axios.get('/companies?page=' + page)
                     .then(res => {
                         this.companies = res.data;
                     });
@@ -138,7 +139,7 @@
                 })
                     .then(() => {
                         this.showModal = false;
-                        this.getCompanies()
+                        this.getResults()
                     }).catch(error => {
                         if(error.response.data.errors) {
                             this.errors = error.response.data.errors;
@@ -153,7 +154,7 @@
                 })
                     .then(() => {
                         this.showModal = false;
-                        this.getCompanies()
+                        this.getResults(this.companies.current_page)
                     }).catch(error => {
                     if(error.response.data.errors) {
                         this.errors = error.response.data.errors;
