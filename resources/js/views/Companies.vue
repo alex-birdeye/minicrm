@@ -12,19 +12,23 @@
 
             <md-field>
                 <label>Name</label>
-                <md-input v-model="companyData.name"></md-input>
+                <md-input v-model="companyData.name" required></md-input>
+                <span v-if="errors.name" class="md-error">{{errors.name[0]}}</span>
             </md-field>
             <md-field>
                 <label>Email</label>
-                <md-input v-model="companyData.email"></md-input>
+                <md-input v-model="companyData.email" required></md-input>
+                <span v-if="errors.email" class="md-error">{{errors.email[0]}}</span>
             </md-field>
             <md-field>
                 <label>Website</label>
                 <md-input v-model="companyData.website"></md-input>
+                <span v-if="errors.website" class="md-error">{{errors.website[0]}}</span>
             </md-field>
             <md-field>
                 <label>Logo</label>
-                <md-file v-model="companyData.logo" accept="image/*"></md-file>
+                <md-file v-model="companyData.logo" accept="image/*" @md-change="onFileUpload($event)"></md-file>
+                <span v-if="errors.logofile" class="md-error">{{errors.logofile[0]}}</span>
             </md-field>
 
             <md-dialog-actions>
@@ -40,7 +44,7 @@
                 <h1 class="md-title">Companies</h1>
             </md-table-toolbar>
 
-            <md-button class="md-fab md-mini md-primary" @click="showModal = true">
+            <md-button class="md-fab md-mini md-primary" @click="clickAdd()">
                 <md-icon>add</md-icon>
             </md-button>
 
@@ -53,7 +57,9 @@
             </md-table-row>
 
             <md-table-row v-for="company in companies">
-                <md-table-cell>{{company.logo}}</md-table-cell>
+                <md-table-cell>
+                    <img v-if="company.logo" :src="'/storage/' + company.logo" alt="">
+                </md-table-cell>
                 <md-table-cell>{{company.name}}</md-table-cell>
                 <md-table-cell>{{company.email}}</md-table-cell>
                 <md-table-cell>{{company.website}}</md-table-cell>
@@ -81,6 +87,7 @@
             sending: false,
             showModal: false,
             deleteDialog: false,
+            file: null
         }),
         mounted() {
             this.getCompanies()
@@ -92,27 +99,66 @@
                         this.companies = res.data;
                     });
             },
+            clickAdd() {
+                this.companyData = {};
+                this.errors = {};
+                this.showModal = true;
+            },
             clickEdit(company) {
-                this.companyData = company;
+                this.companyData = JSON.parse(JSON.stringify(company));
+                this.errors = {};
                 this.showModal = true;
             },
             clickDel(company) {
                 this.companyData = company;
                 this.deleteDialog = true;
             },
+            prepareRequestData() {
+                let formData = new FormData();
+                if (this.companyData.name) {
+                    formData.append("name", this.companyData.name);
+                }
+                if (this.companyData.email) {
+                    formData.append("email", this.companyData.email);
+                }
+                if (this.companyData.website) {
+                    formData.append("website", this.companyData.website);
+                }
+                if (this.file) {
+                    formData.append("logofile", this.file);
+                }
+
+                return formData;
+            },
             createCompany() {
-                axios.post('/companies', this.companyData)
+                axios.post('/companies', this.prepareRequestData(), {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                     .then(() => {
                         this.showModal = false;
                         this.getCompanies()
-                    });
+                    }).catch(error => {
+                        if(error.response.data.errors) {
+                            this.errors = error.response.data.errors;
+                        }
+                });
             },
             updateCompany() {
-                axios.put('/companies/' + this.companyData.id, this.companyData)
+                axios.put('/companies/' + this.companyData.id, this.prepareRequestData(), {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                     .then(() => {
                         this.showModal = false;
                         this.getCompanies()
-                    });
+                    }).catch(error => {
+                    if(error.response.data.errors) {
+                        this.errors = error.response.data.errors;
+                    }
+                });
             },
             deleteCompany() {
                 axios.delete('/companies/' + this.companyData.id)
@@ -120,6 +166,9 @@
                         this.deleteDialog = false;
                         this.getCompanies()
                     });
+            },
+            onFileUpload(event) {
+                this.file = event[0]
             }
         }
     }

@@ -3139,6 +3139,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Login',
   data: function data() {
@@ -3148,7 +3154,8 @@ __webpack_require__.r(__webpack_exports__);
       errors: {},
       sending: false,
       showModal: false,
-      deleteDialog: false
+      deleteDialog: false,
+      file: null
     };
   },
   mounted: function mounted() {
@@ -3162,30 +3169,73 @@ __webpack_require__.r(__webpack_exports__);
         _this.companies = res.data;
       });
     },
+    clickAdd: function clickAdd() {
+      this.companyData = {};
+      this.errors = {};
+      this.showModal = true;
+    },
     clickEdit: function clickEdit(company) {
-      this.companyData = company;
+      this.companyData = JSON.parse(JSON.stringify(company));
+      this.errors = {};
       this.showModal = true;
     },
     clickDel: function clickDel(company) {
       this.companyData = company;
       this.deleteDialog = true;
     },
+    prepareRequestData: function prepareRequestData() {
+      var formData = new FormData();
+
+      if (this.companyData.name) {
+        formData.append("name", this.companyData.name);
+      }
+
+      if (this.companyData.email) {
+        formData.append("email", this.companyData.email);
+      }
+
+      if (this.companyData.website) {
+        formData.append("website", this.companyData.website);
+      }
+
+      if (this.file) {
+        formData.append("logofile", this.file);
+      }
+
+      return formData;
+    },
     createCompany: function createCompany() {
       var _this2 = this;
 
-      axios.post('/companies', this.companyData).then(function () {
+      axios.post('/companies', this.prepareRequestData(), {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function () {
         _this2.showModal = false;
 
         _this2.getCompanies();
+      })["catch"](function (error) {
+        if (error.response.data.errors) {
+          _this2.errors = error.response.data.errors;
+        }
       });
     },
     updateCompany: function updateCompany() {
       var _this3 = this;
 
-      axios.put('/companies/' + this.companyData.id, this.companyData).then(function () {
+      axios.put('/companies/' + this.companyData.id, this.prepareRequestData(), {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function () {
         _this3.showModal = false;
 
         _this3.getCompanies();
+      })["catch"](function (error) {
+        if (error.response.data.errors) {
+          _this3.errors = error.response.data.errors;
+        }
       });
     },
     deleteCompany: function deleteCompany() {
@@ -3196,6 +3246,9 @@ __webpack_require__.r(__webpack_exports__);
 
         _this4.getCompanies();
       });
+    },
+    onFileUpload: function onFileUpload(event) {
+      this.file = event[0];
     }
   }
 });
@@ -40833,6 +40886,7 @@ var render = function() {
               _c("label", [_vm._v("Name")]),
               _vm._v(" "),
               _c("md-input", {
+                attrs: { required: "" },
                 model: {
                   value: _vm.companyData.name,
                   callback: function($$v) {
@@ -40840,7 +40894,13 @@ var render = function() {
                   },
                   expression: "companyData.name"
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.name
+                ? _c("span", { staticClass: "md-error" }, [
+                    _vm._v(_vm._s(_vm.errors.name[0]))
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -40851,6 +40911,7 @@ var render = function() {
               _c("label", [_vm._v("Email")]),
               _vm._v(" "),
               _c("md-input", {
+                attrs: { required: "" },
                 model: {
                   value: _vm.companyData.email,
                   callback: function($$v) {
@@ -40858,7 +40919,13 @@ var render = function() {
                   },
                   expression: "companyData.email"
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.email
+                ? _c("span", { staticClass: "md-error" }, [
+                    _vm._v(_vm._s(_vm.errors.email[0]))
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -40876,7 +40943,13 @@ var render = function() {
                   },
                   expression: "companyData.website"
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.website
+                ? _c("span", { staticClass: "md-error" }, [
+                    _vm._v(_vm._s(_vm.errors.website[0]))
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -40888,6 +40961,11 @@ var render = function() {
               _vm._v(" "),
               _c("md-file", {
                 attrs: { accept: "image/*" },
+                on: {
+                  "md-change": function($event) {
+                    return _vm.onFileUpload($event)
+                  }
+                },
                 model: {
                   value: _vm.companyData.logo,
                   callback: function($$v) {
@@ -40895,7 +40973,13 @@ var render = function() {
                   },
                   expression: "companyData.logo"
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.errors.logofile
+                ? _c("span", { staticClass: "md-error" }, [
+                    _vm._v(_vm._s(_vm.errors.logofile[0]))
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -40962,7 +41046,7 @@ var render = function() {
               staticClass: "md-fab md-mini md-primary",
               on: {
                 click: function($event) {
-                  _vm.showModal = true
+                  return _vm.clickAdd()
                 }
               }
             },
@@ -40990,7 +41074,13 @@ var render = function() {
             return _c(
               "md-table-row",
               [
-                _c("md-table-cell", [_vm._v(_vm._s(company.logo))]),
+                _c("md-table-cell", [
+                  company.logo
+                    ? _c("img", {
+                        attrs: { src: "/storage/" + company.logo, alt: "" }
+                      })
+                    : _vm._e()
+                ]),
                 _vm._v(" "),
                 _c("md-table-cell", [_vm._v(_vm._s(company.name))]),
                 _vm._v(" "),
