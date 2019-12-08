@@ -4,29 +4,98 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+// require('./bootstrap');
+//
+// import Vue from 'vue'
+// import VueRouter from 'vue-router'
+//
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default-dark.css'
 
-window.Vue = require('vue');
+Vue.use(VueMaterial)
+//
+// Vue.use(VueRouter)
+//
+// import App from './views/App'
+// import Hello from './views/Hello'
+// import Home from './views/Home'
+// import Login from './views/Login'
+//
+// const router = new VueRouter({
+//     mode: 'history',
+//     routes: [
+//         {
+//             path: '/',
+//             name: 'home',
+//             component: Home
+//         },
+//         {
+//             path: '/hello',
+//             name: 'hello',
+//             component: Hello,
+//         },
+//         {
+//             path: '/login',
+//             name: 'login',
+//             component: Login,
+//         },
+//     ],
+// });
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+import 'es6-promise/auto'
+import axios from 'axios'
+import './bootstrap'
+import Vue from 'vue'
+import VueAuth from '@websanova/vue-auth'
+import VueAxios from 'vue-axios'
+import VueRouter from 'vue-router'
+import auth from './auth'
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+import App from './views/App'
+import Hello from './views/Hello'
+import Home from './views/Home'
+import Login from './views/Login'
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: Home
+        },
+        {
+            path: '/hello',
+            name: 'hello',
+            component: Hello,
+            meta: {
+                auth: true
+            }
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login,
+        },
+    ],
+});
+
+// Set Vue globally
+window.Vue = Vue
+// Set Vue router
+Vue.router = router
+Vue.use(VueRouter)
+// Set Vue authentication
+Vue.use(VueAxios, axios)
+// axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`
+axios.defaults.baseURL = `/api`
+Vue.use(VueAuth, auth)
+
 
 const app = new Vue({
     el: '#app',
+    components: {App},
+    router,
 });
