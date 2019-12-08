@@ -14,7 +14,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        return Company::limit(10)->latest()->get();
     }
 
     /**
@@ -35,7 +35,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Company::create($request->all());
     }
 
     /**
@@ -69,7 +69,7 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+        $company->update($request->all());
     }
 
     /**
@@ -80,6 +80,6 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        $company->delete();
     }
 }

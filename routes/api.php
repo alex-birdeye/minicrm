@@ -27,5 +27,6 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::resource('/companies', 'CompanyController');
 //    Route::post('logout', 'AuthController@logout');
 });

@@ -14,34 +14,6 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default-dark.css'
 
 Vue.use(VueMaterial)
-//
-// Vue.use(VueRouter)
-//
-// import App from './views/App'
-// import Hello from './views/Hello'
-// import Home from './views/Home'
-// import Login from './views/Login'
-//
-// const router = new VueRouter({
-//     mode: 'history',
-//     routes: [
-//         {
-//             path: '/',
-//             name: 'home',
-//             component: Home
-//         },
-//         {
-//             path: '/hello',
-//             name: 'hello',
-//             component: Hello,
-//         },
-//         {
-//             path: '/login',
-//             name: 'login',
-//             component: Login,
-//         },
-//     ],
-// });
 
 
 import 'es6-promise/auto'
@@ -54,7 +26,7 @@ import VueRouter from 'vue-router'
 import auth from './auth'
 
 import App from './views/App'
-import Hello from './views/Hello'
+import Companies from './views/Companies'
 import Home from './views/Home'
 import Login from './views/Login'
 
@@ -67,9 +39,9 @@ const router = new VueRouter({
             component: Home
         },
         {
-            path: '/hello',
-            name: 'hello',
-            component: Hello,
+            path: '/companies',
+            name: 'companies',
+            component: Companies,
             meta: {
                 auth: true
             }
