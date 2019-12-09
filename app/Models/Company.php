@@ -9,11 +9,21 @@ class Company extends Model
 {
     protected $guarded = [];
 
-    public function delete()
+    public function update(array $attributes = [], array $options = [])
     {
-        Storage::disk('public')->delete($this->logo);
-        return parent::delete();
+        $this->deleteLogoFile();
+        return parent::update($attributes, $options);
     }
 
 
+    public function delete()
+    {
+        $this->deleteLogoFile();
+        return parent::delete();
+    }
+
+    private function deleteLogoFile()
+    {
+        Storage::disk('public')->delete($this->logo);
+    }
 }

@@ -58,7 +58,7 @@
 
             <md-table-row v-for="company in companies.data">
                 <md-table-cell>
-                    <img v-if="company.logo" :src="'/storage/' + company.logo" alt="">
+                    <img width="100" v-if="company.logo" :src="'/storage/' + company.logo" alt="">
                 </md-table-cell>
                 <md-table-cell>{{company.name}}</md-table-cell>
                 <md-table-cell>{{company.email}}</md-table-cell>
@@ -147,7 +147,9 @@
                 });
             },
             updateCompany() {
-                axios.put('/companies/' + this.companyData.id, this.prepareRequestData(), {
+                let formData = this.prepareRequestData();
+                formData.append('_method', 'PUT');
+                axios.post('/companies/' + this.companyData.id, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

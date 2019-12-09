@@ -3226,7 +3226,9 @@ __webpack_require__.r(__webpack_exports__);
     updateCompany: function updateCompany() {
       var _this3 = this;
 
-      axios.put('/companies/' + this.companyData.id, this.prepareRequestData(), {
+      var formData = this.prepareRequestData();
+      formData.append('_method', 'PUT');
+      axios.post('/companies/' + this.companyData.id, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -41672,7 +41674,11 @@ var render = function() {
                 _c("md-table-cell", [
                   company.logo
                     ? _c("img", {
-                        attrs: { src: "/storage/" + company.logo, alt: "" }
+                        attrs: {
+                          width: "100",
+                          src: "/storage/" + company.logo,
+                          alt: ""
+                        }
                       })
                     : _vm._e()
                 ]),
