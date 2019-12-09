@@ -32,3 +32,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('/emploees', 'EmploeeController');
 //    Route::post('logout', 'AuthController@logout');
 });
+
+Route::get('/langs', 'LocalizationController@index');

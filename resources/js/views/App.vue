@@ -2,30 +2,38 @@
     <div>
         <md-toolbar class="md-layout md-alignment-center-space-between">
             <div class="md-layout-item md-layout md-alignment-center-left">
-                <h3 class="md-title md-layout-item md-size-15">MiniCRM</h3>
+                <h3 class="md-title md-layout-item md-size-15">{{langs.minicrm}}</h3>
 
                 <md-menu v-if="$auth.check()" class="md-layout-item md-size-15">
                     <router-link :to="{ name: 'companies' }">
-                        <md-button>Companies</md-button>
+                        <md-button>{{langs.companies}}</md-button>
                     </router-link>
                 </md-menu>
                 <md-menu v-if="$auth.check()" class="md-layout-item md-size-15">
                     <router-link :to="{ name: 'emploees' }">
-                        <md-button class="md-layout-item">Emploees</md-button>
+                        <md-button class="md-layout-item">{{langs.emploees}}</md-button>
                     </router-link>
                 </md-menu>
             </div>
 
             <div class="md-layout-item md-layout md-alignment-center-right">
+                <md-menu md-direction="bottom-start">
+                    <md-button md-menu-trigger>{{langs.language}} ({{locale}})</md-button>
+
+                    <md-menu-content>
+                        <md-menu-item @click.prevent="switchLanguage('en')">en</md-menu-item>
+                        <md-menu-item @click.prevent="switchLanguage('ru')">ru</md-menu-item>
+                    </md-menu-content>
+                </md-menu>
                 <md-menu v-if="$auth.check()" md-direction="bottom-start" class="md-layout-item md-size-10">
                     <md-button @click.prevent="$auth.logout()">
-                        Logout
+                        {{langs.logout}}
                     </md-button>
                 </md-menu>
                 <md-menu v-else md-direction="bottom-start" class="md-layout-item md-size-10">
                     <router-link :to="{ name: 'login' }">
                         <md-button>
-                            Login
+                            {{langs.login}}
                         </md-button>
                     </router-link>
                 </md-menu>
@@ -37,7 +45,28 @@
     </div>
 </template>
 <script>
-    export default {}
+    export default {
+        name: 'App',
+        data: () => ({
+            langs: {},
+            locale: 'en'
+        }),
+        mounted() {
+            this.getLangs();
+        },
+        methods: {
+            getLangs() {
+                axios.get('/langs?lang=' + this.locale)
+                    .then(res => {
+                        this.langs = res.data;
+                    });
+            },
+            switchLanguage(locale) {
+                this.locale = locale;
+                this.getLangs();
+            }
+        }
+    }
 </script>
 <style>
     .md-content {

@@ -3055,7 +3055,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'App',
+  data: function data() {
+    return {
+      langs: {},
+      locale: 'en'
+    };
+  },
+  mounted: function mounted() {
+    this.getLangs();
+  },
+  methods: {
+    getLangs: function getLangs() {
+      var _this = this;
+
+      axios.get('/langs?lang=' + this.locale).then(function (res) {
+        _this.langs = res.data;
+      });
+    },
+    switchLanguage: function switchLanguage(locale) {
+      this.locale = locale;
+      this.getLangs();
+    }
+  }
+});
 
 /***/ }),
 
@@ -3068,6 +3100,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -3270,6 +3305,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -41532,7 +41570,7 @@ var render = function() {
             },
             [
               _c("h3", { staticClass: "md-title md-layout-item md-size-15" }, [
-                _vm._v("MiniCRM")
+                _vm._v(_vm._s(_vm.langs.minicrm))
               ]),
               _vm._v(" "),
               _vm.$auth.check()
@@ -41543,7 +41581,9 @@ var render = function() {
                       _c(
                         "router-link",
                         { attrs: { to: { name: "companies" } } },
-                        [_c("md-button", [_vm._v("Companies")])],
+                        [
+                          _c("md-button", [_vm._v(_vm._s(_vm.langs.companies))])
+                        ],
                         1
                       )
                     ],
@@ -41561,7 +41601,7 @@ var render = function() {
                         { attrs: { to: { name: "emploees" } } },
                         [
                           _c("md-button", { staticClass: "md-layout-item" }, [
-                            _vm._v("Emploees")
+                            _vm._v(_vm._s(_vm.langs.emploees))
                           ])
                         ],
                         1
@@ -41580,6 +41620,54 @@ var render = function() {
               staticClass: "md-layout-item md-layout md-alignment-center-right"
             },
             [
+              _c(
+                "md-menu",
+                { attrs: { "md-direction": "bottom-start" } },
+                [
+                  _c("md-button", { attrs: { "md-menu-trigger": "" } }, [
+                    _vm._v(
+                      _vm._s(_vm.langs.language) +
+                        " (" +
+                        _vm._s(_vm.locale) +
+                        ")"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "md-menu-content",
+                    [
+                      _c(
+                        "md-menu-item",
+                        {
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.switchLanguage("en")
+                            }
+                          }
+                        },
+                        [_vm._v("en")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "md-menu-item",
+                        {
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.switchLanguage("ru")
+                            }
+                          }
+                        },
+                        [_vm._v("ru")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
               _vm.$auth.check()
                 ? _c(
                     "md-menu",
@@ -41600,7 +41688,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                    Logout\n                "
+                            "\n                    " +
+                              _vm._s(_vm.langs.logout) +
+                              "\n                "
                           )
                         ]
                       )
@@ -41620,7 +41710,9 @@ var render = function() {
                         [
                           _c("md-button", [
                             _vm._v(
-                              "\n                        Login\n                    "
+                              "\n                        " +
+                                _vm._s(_vm.langs.login) +
+                                "\n                    "
                             )
                           ])
                         ],
@@ -41680,7 +41772,7 @@ var render = function() {
           }
         },
         [
-          _c("p", [_vm._v("Are you sure you want to delete?")]),
+          _c("p", [_vm._v(_vm._s(_vm.$parent.langs.confirm_delete))]),
           _vm._v(" "),
           _c(
             "md-button",
@@ -41692,7 +41784,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("Close")]
+            [_vm._v(_vm._s(_vm.$parent.langs.close))]
           ),
           _vm._v(" "),
           _c(
@@ -41705,7 +41797,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("Delete")]
+            [_vm._v(_vm._s(_vm.$parent.langs.delete))]
           )
         ],
         1
@@ -41727,13 +41819,17 @@ var render = function() {
         },
         [
           _vm.companyData.id
-            ? _c("md-dialog-title", [_vm._v("Edit company")])
-            : _c("md-dialog-title", [_vm._v("New company")]),
+            ? _c("md-dialog-title", [
+                _vm._v(_vm._s(_vm.$parent.langs.edit_company))
+              ])
+            : _c("md-dialog-title", [
+                _vm._v(_vm._s(_vm.$parent.langs.new_company))
+              ]),
           _vm._v(" "),
           _c(
             "md-field",
             [
-              _c("label", [_vm._v("Name")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.name))]),
               _vm._v(" "),
               _c("md-input", {
                 attrs: { required: "" },
@@ -41758,7 +41854,7 @@ var render = function() {
           _c(
             "md-field",
             [
-              _c("label", [_vm._v("Email")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.email))]),
               _vm._v(" "),
               _c("md-input", {
                 attrs: { required: "" },
@@ -41783,7 +41879,7 @@ var render = function() {
           _c(
             "md-field",
             [
-              _c("label", [_vm._v("Website")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.website))]),
               _vm._v(" "),
               _c("md-input", {
                 model: {
@@ -41807,7 +41903,7 @@ var render = function() {
           _c(
             "md-field",
             [
-              _c("label", [_vm._v("Logo")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.logo))]),
               _vm._v(" "),
               _c("md-file", {
                 attrs: { accept: "image/*" },
@@ -41847,7 +41943,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Close")]
+                [_vm._v(_vm._s(_vm.$parent.langs.close))]
               ),
               _vm._v(" "),
               _vm.companyData.id
@@ -41861,7 +41957,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Save")]
+                    [_vm._v(_vm._s(_vm.$parent.langs.save))]
                   )
                 : _c(
                     "md-button",
@@ -41873,7 +41969,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Save")]
+                    [_vm._v(_vm._s(_vm.$parent.langs.save))]
                   )
             ],
             1
@@ -41887,7 +41983,9 @@ var render = function() {
         { attrs: { "md-card": "" } },
         [
           _c("md-table-toolbar", [
-            _c("h1", { staticClass: "md-title" }, [_vm._v("Companies")])
+            _c("h1", { staticClass: "md-title" }, [
+              _vm._v(_vm._s(_vm.$parent.langs.companies))
+            ])
           ]),
           _vm._v(" "),
           _c(
@@ -41907,15 +42005,15 @@ var render = function() {
           _c(
             "md-table-row",
             [
-              _c("md-table-head", [_vm._v("Logo")]),
+              _c("md-table-head", [_vm._v(_vm._s(_vm.$parent.langs.logo))]),
               _vm._v(" "),
-              _c("md-table-head", [_vm._v("Name")]),
+              _c("md-table-head", [_vm._v(_vm._s(_vm.$parent.langs.name))]),
               _vm._v(" "),
-              _c("md-table-head", [_vm._v("Email")]),
+              _c("md-table-head", [_vm._v(_vm._s(_vm.$parent.langs.email))]),
               _vm._v(" "),
-              _c("md-table-head", [_vm._v("Website")]),
+              _c("md-table-head", [_vm._v(_vm._s(_vm.$parent.langs.website))]),
               _vm._v(" "),
-              _c("md-table-head", [_vm._v("Action")])
+              _c("md-table-head", [_vm._v(_vm._s(_vm.$parent.langs.action))])
             ],
             1
           ),
@@ -41985,10 +42083,22 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _c("pagination", {
-        attrs: { data: _vm.companies, limit: 2 },
-        on: { "pagination-change-page": _vm.getResults }
-      })
+      _c(
+        "pagination",
+        {
+          attrs: { data: _vm.companies, limit: 2 },
+          on: { "pagination-change-page": _vm.getResults }
+        },
+        [
+          _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+            _vm._v("<")
+          ]),
+          _vm._v(" "),
+          _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+            _vm._v(">")
+          ])
+        ]
+      )
     ],
     1
   )
@@ -42033,7 +42143,7 @@ var render = function() {
           }
         },
         [
-          _c("p", [_vm._v("Are you sure you want to delete?")]),
+          _c("p", [_vm._v(_vm._s(_vm.$parent.langs.confirm_delete))]),
           _vm._v(" "),
           _c(
             "md-button",
@@ -42045,7 +42155,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("Close")]
+            [_vm._v(_vm._s(_vm.$parent.langs.close))]
           ),
           _vm._v(" "),
           _c(
@@ -42058,7 +42168,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("Delete")]
+            [_vm._v(_vm._s(_vm.$parent.langs.delete))]
           )
         ],
         1
@@ -42080,13 +42190,17 @@ var render = function() {
         },
         [
           _vm.emploeeData.id
-            ? _c("md-dialog-title", [_vm._v("Edit emploee")])
-            : _c("md-dialog-title", [_vm._v("New emploee")]),
+            ? _c("md-dialog-title", [
+                _vm._v(_vm._s(_vm.$parent.langs.edit_emploee))
+              ])
+            : _c("md-dialog-title", [
+                _vm._v(_vm._s(_vm.$parent.langs.new_emploee))
+              ]),
           _vm._v(" "),
           _c(
             "md-field",
             [
-              _c("label", [_vm._v("First name")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.first_name))]),
               _vm._v(" "),
               _c("md-input", {
                 attrs: { required: "" },
@@ -42111,7 +42225,7 @@ var render = function() {
           _c(
             "md-field",
             [
-              _c("label", [_vm._v("Last name")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.last_name))]),
               _vm._v(" "),
               _c("md-input", {
                 attrs: { required: "" },
@@ -42154,7 +42268,7 @@ var render = function() {
               ])
             },
             [
-              _c("label", [_vm._v("Company")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.company))]),
               _vm._v(" "),
               _vm._v(" "),
               _vm.errors.company_id
@@ -42168,7 +42282,7 @@ var render = function() {
           _c(
             "md-field",
             [
-              _c("label", [_vm._v("Email")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.email))]),
               _vm._v(" "),
               _c("md-input", {
                 model: {
@@ -42192,7 +42306,7 @@ var render = function() {
           _c(
             "md-field",
             [
-              _c("label", [_vm._v("Phone")]),
+              _c("label", [_vm._v(_vm._s(_vm.$parent.langs.phone))]),
               _vm._v(" "),
               _c("md-input", {
                 model: {
@@ -42226,7 +42340,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Close")]
+                [_vm._v(_vm._s(_vm.$parent.langs.close))]
               ),
               _vm._v(" "),
               _vm.emploeeData.id
@@ -42240,7 +42354,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Save")]
+                    [_vm._v(_vm._s(_vm.$parent.langs.save))]
                   )
                 : _c(
                     "md-button",
@@ -42252,7 +42366,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Save")]
+                    [_vm._v(_vm._s(_vm.$parent.langs.save))]
                   )
             ],
             1
@@ -42266,7 +42380,9 @@ var render = function() {
         { attrs: { "md-card": "" } },
         [
           _c("md-table-toolbar", [
-            _c("h1", { staticClass: "md-title" }, [_vm._v("Emploees")])
+            _c("h1", { staticClass: "md-title" }, [
+              _vm._v(_vm._s(_vm.$parent.langs.emploees))
+            ])
           ]),
           _vm._v(" "),
           _c(
@@ -42286,15 +42402,19 @@ var render = function() {
           _c(
             "md-table-row",
             [
-              _c("md-table-head", [_vm._v("First name")]),
+              _c("md-table-head", [
+                _vm._v(_vm._s(_vm.$parent.langs.first_name))
+              ]),
               _vm._v(" "),
-              _c("md-table-head", [_vm._v("Last name")]),
+              _c("md-table-head", [
+                _vm._v(_vm._s(_vm.$parent.langs.last_name))
+              ]),
               _vm._v(" "),
-              _c("md-table-head", [_vm._v("Company")]),
+              _c("md-table-head", [_vm._v(_vm._s(_vm.$parent.langs.company))]),
               _vm._v(" "),
-              _c("md-table-head", [_vm._v("Email")]),
+              _c("md-table-head", [_vm._v(_vm._s(_vm.$parent.langs.email))]),
               _vm._v(" "),
-              _c("md-table-head", [_vm._v("Phone")])
+              _c("md-table-head", [_vm._v(_vm._s(_vm.$parent.langs.phone))])
             ],
             1
           ),
@@ -42356,10 +42476,22 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _c("pagination", {
-        attrs: { data: _vm.emploees, limit: 2 },
-        on: { "pagination-change-page": _vm.getResults }
-      })
+      _c(
+        "pagination",
+        {
+          attrs: { data: _vm.emploees, limit: 2 },
+          on: { "pagination-change-page": _vm.getResults }
+        },
+        [
+          _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+            _vm._v("<")
+          ]),
+          _vm._v(" "),
+          _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+            _vm._v(">")
+          ])
+        ]
+      )
     ],
     1
   )
@@ -42386,18 +42518,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "md-layout md-alignment-center" }, [
+    _c("h1", [_vm._v(_vm._s(_vm.$parent.langs.test_task))])
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "md-layout md-alignment-center" }, [
-      _c("h1", [_vm._v("MiniCRM test task")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -42437,7 +42562,9 @@ var render = function() {
         { staticClass: "md-layout-item md-size-50 md-small-size-100" },
         [
           _c("md-card-header", [
-            _c("div", { staticClass: "md-title" }, [_vm._v("Login")])
+            _c("div", { staticClass: "md-title" }, [
+              _vm._v(_vm._s(_vm.$parent.langs.login))
+            ])
           ]),
           _vm._v(" "),
           _c(
@@ -42446,7 +42573,9 @@ var render = function() {
               _c(
                 "md-field",
                 [
-                  _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+                  _c("label", { attrs: { for: "email" } }, [
+                    _vm._v(_vm._s(_vm.$parent.langs.email))
+                  ]),
                   _vm._v(" "),
                   _c("md-input", {
                     attrs: {
@@ -42477,7 +42606,7 @@ var render = function() {
                 "md-field",
                 [
                   _c("label", { attrs: { for: "password" } }, [
-                    _vm._v("Password")
+                    _vm._v(_vm._s(_vm.$parent.langs.password))
                   ]),
                   _vm._v(" "),
                   _c("md-input", {
@@ -42514,7 +42643,7 @@ var render = function() {
                   staticClass: "md-primary",
                   attrs: { type: "submit", disabled: _vm.sending }
                 },
-                [_vm._v("Login")]
+                [_vm._v(_vm._s(_vm.$parent.langs.login))]
               )
             ],
             1

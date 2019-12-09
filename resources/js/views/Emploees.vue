@@ -1,54 +1,54 @@
 <template>
     <md-content>
         <md-dialog :md-active.sync="deleteDialog" style="padding: 0 2rem">
-            <p>Are you sure you want to delete?</p>
-            <md-button class="md-primary" @click="deleteDialog = false">Close</md-button>
-            <md-button class="md-accent" @click="deleteEmploee()">Delete</md-button>
+            <p>{{$parent.langs.confirm_delete}}</p>
+            <md-button class="md-primary" @click="deleteDialog = false">{{$parent.langs.close}}</md-button>
+            <md-button class="md-accent" @click="deleteEmploee()">{{$parent.langs.delete}}</md-button>
         </md-dialog>
 
         <md-dialog :md-active.sync="showModal" style="padding: 0 2rem">
-            <md-dialog-title v-if="emploeeData.id">Edit emploee</md-dialog-title>
-            <md-dialog-title v-else>New emploee</md-dialog-title>
+            <md-dialog-title v-if="emploeeData.id">{{$parent.langs.edit_emploee}}</md-dialog-title>
+            <md-dialog-title v-else>{{$parent.langs.new_emploee}}</md-dialog-title>
 
             <md-field>
-                <label>First name</label>
+                <label>{{$parent.langs.first_name}}</label>
                 <md-input v-model="emploeeData.first_name" required></md-input>
                 <span v-if="errors.first_name" class="md-error">{{errors.first_name[0]}}</span>
             </md-field>
             <md-field>
-                <label>Last name</label>
+                <label>{{$parent.langs.last_name}}</label>
                 <md-input v-model="emploeeData.last_name" required></md-input>
                 <span v-if="errors.last_name" class="md-error">{{errors.last_name[0]}}</span>
             </md-field>
             <md-autocomplete :md-options="companies" @md-changed="getCompanies"
                              @md-opened="getCompanies" @md-selected="companySelected" required>
-                <label>Company</label>
+                <label>{{$parent.langs.company}}</label>
 
                 <template slot="md-autocomplete-item" slot-scope="{ item, term }">{{ item.name }}</template>
                 <span v-if="errors.company_id" class="md-error">{{errors.company_id[0]}}</span>
             </md-autocomplete>
             <md-field>
-                <label>Email</label>
+                <label>{{$parent.langs.email}}</label>
                 <md-input v-model="emploeeData.email"></md-input>
                 <span v-if="errors.email" class="md-error">{{errors.email[0]}}</span>
             </md-field>
             <md-field>
-                <label>Phone</label>
+                <label>{{$parent.langs.phone}}</label>
                 <md-input v-model="emploeeData.phone"></md-input>
                 <span v-if="errors.phone" class="md-error">{{errors.phone[0]}}</span>
             </md-field>
 
             <md-dialog-actions>
-                <md-button class="md-primary" @click="showModal = false">Close</md-button>
-                <md-button v-if="emploeeData.id" class="md-primary" @click="updateEmploee()">Save</md-button>
-                <md-button v-else class="md-primary" @click="createEmploee()">Save</md-button>
+                <md-button class="md-primary" @click="showModal = false">{{$parent.langs.close}}</md-button>
+                <md-button v-if="emploeeData.id" class="md-primary" @click="updateEmploee()">{{$parent.langs.save}}</md-button>
+                <md-button v-else class="md-primary" @click="createEmploee()">{{$parent.langs.save}}</md-button>
             </md-dialog-actions>
         </md-dialog>
 
 
         <md-table md-card>
             <md-table-toolbar>
-                <h1 class="md-title">Emploees</h1>
+                <h1 class="md-title">{{$parent.langs.emploees}}</h1>
             </md-table-toolbar>
 
             <md-button class="md-fab md-mini md-primary" @click="clickAdd()">
@@ -56,11 +56,11 @@
             </md-button>
 
             <md-table-row>
-                <md-table-head>First name</md-table-head>
-                <md-table-head>Last name</md-table-head>
-                <md-table-head>Company</md-table-head>
-                <md-table-head>Email</md-table-head>
-                <md-table-head>Phone</md-table-head>
+                <md-table-head>{{$parent.langs.first_name}}</md-table-head>
+                <md-table-head>{{$parent.langs.last_name}}</md-table-head>
+                <md-table-head>{{$parent.langs.company}}</md-table-head>
+                <md-table-head>{{$parent.langs.email}}</md-table-head>
+                <md-table-head>{{$parent.langs.phone}}</md-table-head>
             </md-table-row>
 
             <md-table-row v-for="emploee in emploees.data">
@@ -80,7 +80,10 @@
                 </md-table-cell>
             </md-table-row>
         </md-table>
-        <pagination :data="emploees" :limit="2" @pagination-change-page="getResults"></pagination>
+        <pagination :data="emploees" :limit="2" @pagination-change-page="getResults">
+            <span slot="prev-nav">&lt;</span>
+            <span slot="next-nav">&gt;</span>
+        </pagination>
     </md-content>
 </template>
 

@@ -2,18 +2,18 @@
     <form novalidate class="md-layout md-alignment-center-center" @submit.prevent="login">
         <md-card class="md-layout-item md-size-50 md-small-size-100">
             <md-card-header>
-                <div class="md-title">Login</div>
+                <div class="md-title">{{$parent.langs.login}}</div>
             </md-card-header>
 
             <md-card-content>
                 <md-field>
-                    <label for="email">Email</label>
+                    <label for="email">{{$parent.langs.email}}</label>
                     <md-input type="email" id="email" autocomplete="email" v-model="form.email"
                               :disabled="sending"/>
                     <span class="md-error" v-if="errors.email">{{errors.email[0]}}</span>
                 </md-field>
                 <md-field>
-                    <label for="password">Password</label>
+                    <label for="password">{{$parent.langs.password}}</label>
                     <md-input type="password" id="password" v-model="form.password"
                               :disabled="sending"/>
                     <!--<span class="md-error" v-if="!$v.form.email.required">The email is required</span>-->
@@ -23,7 +23,7 @@
             <md-progress-bar md-mode="indeterminate" v-if="sending"/>
 
             <md-card-actions>
-                <md-button type="submit" class="md-primary" :disabled="sending">Login</md-button>
+                <md-button type="submit" class="md-primary" :disabled="sending">{{$parent.langs.login}}</md-button>
             </md-card-actions>
         </md-card>
 
