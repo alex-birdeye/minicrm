@@ -27,6 +27,7 @@ import auth from './auth'
 
 import App from './views/App'
 import Companies from './views/Companies'
+import Emploees from './views/Emploees'
 import Home from './views/Home'
 import Login from './views/Login'
 
@@ -42,6 +43,14 @@ const router = new VueRouter({
             path: '/companies',
             name: 'companies',
             component: Companies,
+            meta: {
+                auth: true
+            }
+        },
+        {
+            path: '/emploees',
+            name: 'emploees',
+            component: Emploees,
             meta: {
                 auth: true
             }

@@ -10,7 +10,9 @@
                     </router-link>
                 </md-menu>
                 <md-menu v-if="$auth.check()" class="md-layout-item md-size-15">
-                    <md-button class="md-layout-item">Emploees</md-button>
+                    <router-link :to="{ name: 'emploees' }">
+                        <md-button class="md-layout-item">Emploees</md-button>
+                    </router-link>
                 </md-menu>
             </div>
 

@@ -99,4 +99,17 @@ class CompanyController extends Controller
     {
         $company->delete();
     }
+
+    public function autocomplete(Request $request)
+    {
+//        dd($request->search);
+        if ($request->search)
+        {
+            return Company::where('name', 'like', '%' . $request->search . '%')->limit(10)->get(['id', 'name']);
+        }
+        else
+        {
+            return Company::limit(10)->get(['id', 'name']);
+        }
+    }
 }
