@@ -2,12 +2,21 @@
 
 namespace App\Models;
 
+use App\Mail\CompanyCreated;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class Company extends Model
 {
     protected $guarded = [];
+
+    public function save(array $options = [])
+    {
+        Mail::to($this->email)->send(new CompanyCreated($this->name));
+        return parent::save($options);
+    }
+
 
     public function update(array $attributes = [], array $options = [])
     {

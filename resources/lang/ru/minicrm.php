@@ -27,5 +27,7 @@ return [
     'company' => 'Компания',
     'phone' => 'Телефон',
     'language' => 'Язык',
+    'congratulations' => 'Поздравляем !',
+    'company_created' => 'Компания :name успешно создана !',
 
 ];

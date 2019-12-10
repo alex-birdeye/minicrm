@@ -27,5 +27,7 @@ return [
     'company' => 'Company',
     'phone' => 'Phone',
     'language' => 'Language',
+    'congratulations' => 'Congratulations !',
+    'company_created' => 'Company :name succesfully created !',
 
 ];
