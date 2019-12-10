@@ -3071,10 +3071,17 @@ __webpack_require__.r(__webpack_exports__);
       locale: 'en'
     };
   },
+  beforeMount: function beforeMount() {
+    this.getLocale();
+  },
   mounted: function mounted() {
     this.getLangs();
   },
   methods: {
+    getLocale: function getLocale() {
+      var locale = document.cookie.replace(/(?:(?:^|.*;\s*)locale\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+      this.locale = locale ? locale : 'en';
+    },
     getLangs: function getLangs() {
       var _this = this;
 
@@ -3083,6 +3090,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     switchLanguage: function switchLanguage(locale) {
+      document.cookie = 'locale=' + locale;
+      window.axios.defaults.headers.common['Locale'] = document.cookie.replace(/(?:(?:^|.*;\s*)locale\s*\=\s*([^;]*).*$)|^.*$/, "$1");
       this.locale = locale;
       this.getLangs();
     }
@@ -90760,6 +90769,7 @@ try {
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['Locale'] = document.cookie.replace(/(?:(?:^|.*;\s*)locale\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

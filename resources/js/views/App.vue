@@ -51,10 +51,17 @@
             langs: {},
             locale: 'en'
         }),
+        beforeMount() {
+            this.getLocale();
+        },
         mounted() {
             this.getLangs();
         },
         methods: {
+            getLocale() {
+                const locale = document.cookie.replace(/(?:(?:^|.*;\s*)locale\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                this.locale = locale ? locale : 'en';
+            },
             getLangs() {
                 axios.get('/langs?lang=' + this.locale)
                     .then(res => {
@@ -62,6 +69,8 @@
                     });
             },
             switchLanguage(locale) {
+                document.cookie = 'locale=' + locale;
+                window.axios.defaults.headers.common['Locale'] = document.cookie.replace(/(?:(?:^|.*;\s*)locale\s*\=\s*([^;]*).*$)|^.*$/, "$1");
                 this.locale = locale;
                 this.getLangs();
             }

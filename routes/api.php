@@ -34,3 +34,5 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 Route::get('/langs', 'LocalizationController@index');
+Route::get('/locale', 'LocalizationController@getLocale');
+Route::get('/locale/{locale}', 'LocalizationController@setLocale');
